@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "RSA Şifreleme";
+    bool isEncrypted = !string.IsNullOrEmpty(ViewBag.EncryptedText as string);
+}
+
+<section class="text-center mb-5">
+    <h2 class="fw-bold display-6 text-success">🔐 RSA ile Metin Şifreleme</h2>
+    <p class="text-muted fs-5">Public Key ile bir metni güvenli şekilde şifreleyin.</p>
+</section>
+
+<form method="post" class="row g-4">
+    <div class="col-12">
+        <label class="form-label fw-semibold">✍️ Şifrelenecek Metin</label>
+        <textarea name="plainText" class="form-control" rows="@(isEncrypted ? "3" : "5")">@ViewBag.PlainText</textarea>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label fw-semibold">🔓 Public Key </label>
+        <textarea name="base64PublicKey" class="form-control" rows="@(isEncrypted ? "3" : "5")">@ViewBag.PublicKey</textarea>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center gap-3">
+        <a href="/" class="btn btn-outline-dark px-4 py-2">⬅️ Ana Sayfa</a>
+        <button type="submit" class="btn btn-success px-4 py-2">🔒 Şifrele</button>
+    </div>
+</form>
+
+@if (isEncrypted)
+{
+    <div class="mt-5">
+        <h5>🔒 Şifrelenmiş Metin</h5>
+        <div class="input-group">
+            <textarea id="encryptedText" class="form-control" rows="5" readonly>@ViewBag.EncryptedText</textarea>
+            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('encryptedText')">📋 Kopyala</button>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Error as string))
+{
+    <div class="alert alert-danger mt-4">@ViewBag.Error</div>
+}
+
+@section Scripts {
+    <script>
+        function copyToClipboard(elementId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            alert("Kopyalandı!");
+        }
+    </script>
+}

@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "RSA Anahtar Üretimi";
+}
+
+<section class="text-center mb-5">
+    <h2 class="fw-bold display-6 text-primary">🔐 RSA Anahtar Üretimi</h2>
+    <p class="text-muted mt-2">2048 bit güvenli RSA public ve private key çifti oluştur.</p>
+</section>
+
+<form asp-action="Generate" method="post" class="row g-4">
+    <div class="col-12">
+        <label class="form-label fw-semibold">🔓 Public Key</label>
+        <div class="input-group">
+            <textarea id="publicKey" class="form-control" rows="6" readonly>@ViewBag.PublicKey</textarea>
+            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('publicKey')">📋 Kopyala</button>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label fw-semibold">🔒 Private Key</label>
+        <div class="input-group">
+            <textarea id="privateKey" class="form-control" rows="6" readonly>@ViewBag.PrivateKey</textarea>
+            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('privateKey')">📋 Kopyala</button>
+        </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center gap-3">
+        <a href="/" class="btn btn-outline-dark px-4 py-2">
+            ⬅️ Ana Sayfaya Dön
+        </a>
+        <button type="submit" class="btn btn-success px-4 py-2">
+             Anahtar Üret
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function copyToClipboard(elementId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            alert("Kopyalandı!");
+        }
+    </script>
+}

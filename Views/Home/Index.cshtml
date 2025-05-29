@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Kripto Uygulaması";
+}
+
+<style>
+    .ultra-rounded {
+        border-radius: 2rem !important;
+    }
+</style>
+
+<section class="text-center mb-5">
+    <h1 class="fw-bold display-4 text-dark">🔐 Kripto Uygulaması</h1>
+</section>
+
+<div id="cryptoCarousel" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 900px;">
+    <div class="carousel-inner shadow-lg ultra-rounded">
+
+        <div class="carousel-item active bg-light p-5 ultra-rounded">
+            <div class="text-center">
+                <div class="display-2 mb-4">🔑</div>
+                <h2 class="fw-bold">Anahtar Üret</h2>
+                <p class="fs-5 text-muted">RSA algoritmasına göre public & private key oluştur.</p>
+                <a href="/KeyGenerate" class="btn btn-outline-primary px-4 py-2 mt-3">Git →</a>
+            </div>
+        </div>
+
+        <div class="carousel-item bg-light p-5 ultra-rounded">
+            <div class="text-center">
+                <div class="display-2 mb-4">🔐</div>
+                <h2 class="fw-bold">Metin Şifrele</h2>
+                <p class="fs-5 text-muted">Public key kullanarak güvenli şifreleme işlemi yap.</p>
+                <a href="/RsaEncrypt" class="btn btn-outline-success px-4 py-2 mt-3">Git →</a>
+            </div>
+        </div>
+
+        <div class="carousel-item bg-light p-5 ultra-rounded">
+            <div class="text-center">
+                <div class="display-2 mb-4">🔓</div>
+                <h2 class="fw-bold">Şifreyi Çöz</h2>
+                <p class="fs-5 text-muted">Private key ile şifrelenmiş metni çöz.</p>
+                <a href="/RsaDecrypt" class="btn btn-outline-warning px-4 py-2 mt-3">Git →</a>
+            </div>
+        </div>
+
+        <div class="carousel-item bg-light p-5 ultra-rounded">
+            <div class="text-center">
+                <div class="display-2 mb-4">♻️</div>
+                <h2 class="fw-bold">SHA-256 Hashle</h2>
+                <p class="fs-5 text-muted">Bir metni veya dosyayı SHA-256 ile özetle.</p>
+                <a href="/Sha256" class="btn btn-outline-info px-4 py-2 mt-3">Git →</a>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#cryptoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+        <span class="visually-hidden">Önceki</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#cryptoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+        <span class="visually-hidden">Sonraki</span>
+    </button>
+</div>
+
+@section Scripts {
+    <script>
+        const myCarousel = document.querySelector('#cryptoCarousel');
+        const carousel = new bootstrap.Carousel(myCarousel, {
+            interval: 5000,
+            ride: 'carousel',
+            pause: false
+        });
+    </script>
+}
