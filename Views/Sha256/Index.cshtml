@@ -1,37 +1,176 @@
 ﻿@{
     ViewData["Title"] = "SHA-256 Hashleme";
     bool isHashed = !string.IsNullOrEmpty(ViewBag.HashResult as string);
+    string selectedMode = ViewBag.Mode as string ?? "text";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="text-center mb-5">
-    <h2 class="fw-bold display-6 text-info">🧬 SHA-256 Hashleme</h2>
-    <p class="text-muted fs-5">Metin veya dosya kullanarak benzersiz SHA-256 hash üret.</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    body {
+        background-color: #000;
+        color: #00bfff;
+        font-family: 'Orbitron', 'Courier New', monospace;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.3rem;
+        color: #00ffff;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        text-shadow: 0 0 10px #00ffff;
+    }
+
+    .text-muted {
+        color: #b0cbd6 !important;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .hash-type-btn {
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        padding: 1.2rem 2rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #00bfff;
+        background: transparent;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0,191,255,0.4);
+        margin: 0 1rem;
+    }
+
+        .hash-type-btn.active {
+            background: #00bfff;
+            color: #000;
+            box-shadow: 0 0 20px #00bfff;
+        }
+
+    .form-section {
+        margin-top: 2rem;
+        display: none;
+    }
+
+        .form-section.active {
+            display: block;
+        }
+
+    textarea.form-control,
+    input.form-control {
+        background-color: rgba(0, 255, 255, 0.03) !important;
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        padding: 1rem;
+        color: #bffcff !important;
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.1);
+    }
+
+    .form-label {
+        color: #bdeeff;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-neon {
+        border: 2px solid #00bfff;
+        border-radius: 30px;
+        background: transparent;
+        color: #00bfff;
+        padding: 0.6rem 1.6rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+        .btn-neon:hover {
+            background: #00bfff;
+            color: #000;
+            box-shadow: 0 0 12px #00bfff;
+        }
+
+    .btn-copy {
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        background-color: transparent;
+        color: #00d9ff;
+        padding: 0.5rem 1.2rem;
+        font-weight: bold;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+    }
+
+        .btn-copy:hover {
+            background-color: #00d9ff;
+            color: #000;
+            box-shadow: 0 0 15px #00d9ff;
+        }
+
+    .file-name-label {
+        margin-top: 0.5rem;
+        color: #7fdfff;
+        font-size: 0.95rem;
+        font-style: italic;
+        text-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+        text-align: center;
+    }
+
+</style>
+
+<section class="text-center mb-4">
+    <h2 class="section-title">🧬 SHA-256 Hashleme</h2>
+    <p class="text-muted">Metin veya dosya kullanarak benzersiz SHA-256 hash üret.</p>
 </section>
 
-<form method="post" enctype="multipart/form-data" class="row g-4">
-    <div class="col-12">
-        <label class="form-label fw-semibold">✍️ Metin Girin (isteğe bağlı)</label>
-        <textarea name="plainText" class="form-control" rows="@(isHashed ? "3" : "5")">@ViewBag.PlainText</textarea>
+<form method="post" enctype="multipart/form-data" class="text-center">
+    <div class="mb-4">
+        <button type="button" id="textModeBtn" class="hash-type-btn @(selectedMode == "text" ? "active" : "")">📝 Metin</button>
+        <button type="button" id="fileModeBtn" class="hash-type-btn @(selectedMode == "file" ? "active" : "")">📁 Dosya</button>
     </div>
 
-    <div class="col-12">
-        <label class="form-label fw-semibold">📁 Dosya Yükleyin</label>
-        <input type="file" name="uploadedFile" class="form-control" />
+    <div id="textModeSection" class="form-section container @(selectedMode == "text" ? "active" : "")" style="max-width: 800px;">
+        <div class="neon-box mb-4">
+            <label class="form-label">✍️ Metin Girin</label>
+            <textarea name="plainText" class="form-control" rows="@(isHashed ? "3" : "5")">@ViewBag.PlainText</textarea>
+        </div>
     </div>
 
-    <div class="col-12 d-flex justify-content-center gap-3">
-        <a href="/" class="btn btn-outline-dark px-4 py-2">⬅️ Ana Sayfa</a>
-        <button type="submit" class="btn btn-info text-white px-4 py-2">🔄 Hashle</button>
+    <div id="fileModeSection" class="form-section container @(selectedMode == "file" ? "active" : "")" style="max-width: 800px;">
+        <div class="neon-box text-center">
+            <label class="form-label">📁 Dosya Seçin</label>
+            <div class="d-flex flex-column align-items-center">
+                <input type="file" name="uploadedFile" id="uploadedFile" class="d-none" onchange="showFileName(this)" />
+                <label for="uploadedFile" class="btn-neon mb-2">📂 Dosya Seç</label>
+                <p id="selectedFileName" class="file-name-label">
+                    @(!string.IsNullOrEmpty(ViewBag.FileName as string) ? ViewBag.FileName : "Henüz dosya seçilmedi")
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center gap-4 mb-4">
+        <a href="/" class="btn-neon">⬅️ Ana Sayfa</a>
+        <button type="submit" class="btn-neon">🔄 Hashle</button>
     </div>
 </form>
 
 @if (isHashed)
 {
-    <div class="mt-5">
-        <h5>🔍 SHA-256 Sonucu @(ViewBag.FileName != null ? $" - {ViewBag.FileName}" : "")</h5>
+    <div class="container mt-5 neon-box" style="max-width: 800px;">
+        <h5 class="form-label">🔍 SHA-256 Sonucu @(ViewBag.FileName != null ? " - " + ViewBag.FileName : "")</h5>
         <div class="input-group">
             <textarea id="hashResult" class="form-control" rows="3" readonly>@ViewBag.HashResult</textarea>
-            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('hashResult')">📋 Kopyala</button>
+            <button type="button" class="btn-copy ms-2" onclick="copyToClipboard('hashResult')">
+                <i class="fas fa-copy"></i> Kopyala
+            </button>
         </div>
     </div>
 }
@@ -43,12 +182,36 @@
 
 @section Scripts {
     <script>
+        const textBtn = document.getElementById("textModeBtn");
+        const fileBtn = document.getElementById("fileModeBtn");
+        const textSection = document.getElementById("textModeSection");
+        const fileSection = document.getElementById("fileModeSection");
+
+        textBtn.addEventListener("click", () => {
+            textBtn.classList.add("active");
+            fileBtn.classList.remove("active");
+            textSection.classList.add("active");
+            fileSection.classList.remove("active");
+        });
+
+        fileBtn.addEventListener("click", () => {
+            fileBtn.classList.add("active");
+            textBtn.classList.remove("active");
+            fileSection.classList.add("active");
+            textSection.classList.remove("active");
+        });
+
         function copyToClipboard(elementId) {
             const textarea = document.getElementById(elementId);
             textarea.select();
             textarea.setSelectionRange(0, 99999);
             document.execCommand("copy");
             alert("Kopyalandı!");
+        }
+
+        function showFileName(input) {
+            const fileName = input.files[0]?.name || "Henüz dosya seçilmedi";
+            document.getElementById("selectedFileName").textContent = fileName;
         }
     </script>
 }

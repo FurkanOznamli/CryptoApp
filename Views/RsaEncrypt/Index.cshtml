@@ -1,37 +1,142 @@
 ﻿@{
     ViewData["Title"] = "RSA Şifreleme";
     bool isEncrypted = !string.IsNullOrEmpty(ViewBag.EncryptedText as string);
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="text-center mb-5">
-    <h2 class="fw-bold display-6 text-success">🔐 RSA ile Metin Şifreleme</h2>
-    <p class="text-muted fs-5">Public Key ile bir metni güvenli şekilde şifreleyin.</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    body {
+        background-color: #000;
+        color: #00bfff;
+        font-family: 'Orbitron', 'Courier New', monospace;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.3rem;
+        color: #00ffcc;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .text-muted {
+        color: #99cbd6 !important;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .neon-box {
+        background: rgba(0, 255, 255, 0.03);
+        border: 2px solid #00bfff;
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 0 15px rgba(0, 191, 255, 0.2);
+    }
+
+    textarea.form-control {
+        background-color: rgba(0, 255, 255, 0.03) !important;
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        padding: 1rem;
+        color: #bffcff;
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.1);
+    }
+
+        textarea.form-control:focus {
+            outline: none;
+            background-color: rgba(0, 255, 255, 0.08) !important;
+            box-shadow: 0 0 15px #00bfff, inset 0 0 10px rgba(0, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+    .form-label {
+        color: #bdeeff;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-neon {
+        border: 2px solid #00bfff;
+        border-radius: 30px;
+        background: transparent;
+        color: #00bfff;
+        padding: 0.6rem 1.6rem;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-neon:hover {
+            background: #00bfff;
+            color: #000;
+            box-shadow: 0 0 12px #00bfff;
+        }
+
+    .btn-copy {
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        background-color: transparent;
+        color: #00d9ff;
+        padding: 0.5rem 1.2rem;
+        font-weight: bold;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+    }
+
+        .btn-copy i {
+            font-size: 1.2rem;
+        }
+
+        .btn-copy:hover {
+            background-color: #00d9ff;
+            color: #000;
+            box-shadow: 0 0 15px #00d9ff;
+        }
+</style>
+
+<section class="text-center mb-4">
+    <h2 class="section-title">🔐 RSA ile Metin Şifreleme</h2>
+    <p class="text-muted">Public Key ile bir metni güvenli şekilde şifreleyin.</p>
 </section>
 
-<form method="post" class="row g-4">
-    <div class="col-12">
-        <label class="form-label fw-semibold">✍️ Şifrelenecek Metin</label>
+<form method="post" class="container" style="max-width: 800px;">
+    <div class="neon-box">
+        <label class="form-label">✍️ Şifrelenecek Metin</label>
         <textarea name="plainText" class="form-control" rows="@(isEncrypted ? "3" : "5")">@ViewBag.PlainText</textarea>
     </div>
 
-    <div class="col-12">
-        <label class="form-label fw-semibold">🔓 Public Key </label>
+    <div class="neon-box">
+        <label class="form-label">🔓 Public Key</label>
         <textarea name="base64PublicKey" class="form-control" rows="@(isEncrypted ? "3" : "5")">@ViewBag.PublicKey</textarea>
     </div>
 
-    <div class="col-12 d-flex justify-content-center gap-3">
-        <a href="/" class="btn btn-outline-dark px-4 py-2">⬅️ Ana Sayfa</a>
-        <button type="submit" class="btn btn-success px-4 py-2">🔒 Şifrele</button>
+    <div class="d-flex justify-content-center gap-4 mb-4">
+        <a href="/" class="btn-neon">⬅️ Ana Sayfa</a>
+        <button type="submit" class="btn-neon">🔒 Şifrele</button>
     </div>
 </form>
 
 @if (isEncrypted)
 {
-    <div class="mt-5">
-        <h5>🔒 Şifrelenmiş Metin</h5>
+    <div class="container mt-5 neon-box" style="max-width: 800px;">
+        <h5 class="form-label">🔒 Şifrelenmiş Metin</h5>
         <div class="input-group">
             <textarea id="encryptedText" class="form-control" rows="5" readonly>@ViewBag.EncryptedText</textarea>
-            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('encryptedText')">📋 Kopyala</button>
+            <button type="button" class="btn-copy ms-2" onclick="copyToClipboard('encryptedText')">
+                <i class="fas fa-copy"></i> Kopyala
+            </button>
         </div>
     </div>
 }

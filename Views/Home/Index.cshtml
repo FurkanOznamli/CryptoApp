@@ -1,67 +1,212 @@
 ﻿@{
     ViewData["Title"] = "Kripto Uygulaması";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 <style>
-    .ultra-rounded {
-        border-radius: 2rem !important;
+    section {
+        padding: 3rem 2rem;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #00ccff;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+        text-shadow: 0 0 10px #00ccff;
+    }
+
+    .carousel-container {
+        max-width: 900px;
+        margin: 0 auto 2rem;
+    }
+
+    .carousel-inner .carousel-item {
+        padding: 3rem;
+        border-radius: 2rem;
+        background: rgba(0, 204, 255, 0.05);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+        color: #00ccff;
+    }
+
+    .carousel-item h2 {
+        font-size: 2rem;
+        color: #00e6ff;
+        font-weight: bold;
+    }
+
+    .carousel-item p {
+        color: #bffeff;
+        font-size: 1.15rem;
+    }
+
+    .carousel-item a {
+        padding: 0.7rem 2rem;
+        border: 2px solid #00ccff;
+        border-radius: 2rem;
+        font-weight: bold;
+        color: #00ccff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .carousel-item a:hover {
+            background-color: #00ccff;
+            color: #000;
+            box-shadow: 0 0 10px #00ccff;
+        }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #00ccff;
+        border-radius: 50%;
+        padding: 1rem;
+    }
+
+    .card-neon {
+        background: rgba(0, 204, 255, 0.06);
+        border: 2px solid #00ccff;
+        border-radius: 1.75rem;
+        padding: 2rem;
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+        transition: all 0.3s ease;
+        margin: 1rem;
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 420px;
+        text-align: center;
+    }
+
+        .card-neon:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.6);
+        }
+
+        .card-neon i {
+            font-size: 3rem;
+            color: #00ccff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 12px #00ccff;
+        }
+
+        .card-neon h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #00e6ff;
+        }
+
+        .card-neon p {
+            font-size: 1rem;
+            color: #c0faff;
+            flex-grow: 1;
+        }
+
+    .btn-neon {
+        margin-top: 1.5rem;
+        padding: 0.6rem 1.6rem;
+        font-weight: bold;
+        border: 2px solid #00ccff;
+        border-radius: 30px;
+        background: transparent;
+        color: #00ccff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-neon:hover {
+            background: #00ccff;
+            color: #000;
+            box-shadow: 0 0 12px #00ccff;
+        }
+
+    .grid-layout {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: -0.5rem;
     }
 </style>
 
-<section class="text-center mb-5">
-    <h1 class="fw-bold display-4 text-dark">🔐 Kripto Uygulaması</h1>
+<!-- 🟢 SAYFA BAŞLIĞI -->
+<section>
+    <h1 class="section-title">💻 Kripto Uygulamasına Hoşgeldiniz</h1>
 </section>
 
-<div id="cryptoCarousel" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 900px;">
-    <div class="carousel-inner shadow-lg ultra-rounded">
-
-        <div class="carousel-item active bg-light p-5 ultra-rounded">
-            <div class="text-center">
-                <div class="display-2 mb-4">🔑</div>
-                <h2 class="fw-bold">Anahtar Üret</h2>
-                <p class="fs-5 text-muted">RSA algoritmasına göre public & private key oluştur.</p>
-                <a href="/KeyGenerate" class="btn btn-outline-primary px-4 py-2 mt-3">Git →</a>
+<!-- 🔄 ÜSTTE KAYAN KARTLAR -->
+<section class="carousel-container mt-0">
+    <div id="cryptoCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+            <div class="carousel-item active text-center">
+                <h2>🔑 RSA Anahtarlama</h2>
+                <p>Güçlü public-private key yapısıyla güvenli veri aktarımı.</p>
+                <a href="/KeyGenerate">Anahtar Üret</a>
+            </div>
+            <div class="carousel-item text-center">
+                <h2>🔐 Metin Şifreleme</h2>
+                <p>Public key ile metnini şifrele, yalnızca sen çöz.</p>
+                <a href="/RsaEncrypt">Şifrele</a>
+            </div>
+            <div class="carousel-item text-center">
+                <h2>🔓 Şifre Çöz</h2>
+                <p>Önceden şifrelediğin metni private key ile çöz.</p>
+                <a href="/RsaDecrypt">Çöz</a>
+            </div>
+            <div class="carousel-item text-center">
+                <h2>🧬 SHA-256 Hash</h2>
+                <p>Verinin sabit uzunlukta özetini oluştur.</p>
+                <a href="/Sha256">Hashle</a>
             </div>
         </div>
-
-        <div class="carousel-item bg-light p-5 ultra-rounded">
-            <div class="text-center">
-                <div class="display-2 mb-4">🔐</div>
-                <h2 class="fw-bold">Metin Şifrele</h2>
-                <p class="fs-5 text-muted">Public key kullanarak güvenli şifreleme işlemi yap.</p>
-                <a href="/RsaEncrypt" class="btn btn-outline-success px-4 py-2 mt-3">Git →</a>
-            </div>
-        </div>
-
-        <div class="carousel-item bg-light p-5 ultra-rounded">
-            <div class="text-center">
-                <div class="display-2 mb-4">🔓</div>
-                <h2 class="fw-bold">Şifreyi Çöz</h2>
-                <p class="fs-5 text-muted">Private key ile şifrelenmiş metni çöz.</p>
-                <a href="/RsaDecrypt" class="btn btn-outline-warning px-4 py-2 mt-3">Git →</a>
-            </div>
-        </div>
-
-        <div class="carousel-item bg-light p-5 ultra-rounded">
-            <div class="text-center">
-                <div class="display-2 mb-4">♻️</div>
-                <h2 class="fw-bold">SHA-256 Hashle</h2>
-                <p class="fs-5 text-muted">Bir metni veya dosyayı SHA-256 ile özetle.</p>
-                <a href="/Sha256" class="btn btn-outline-info px-4 py-2 mt-3">Git →</a>
-            </div>
-        </div>
-
+        <button class="carousel-control-prev" type="button" data-bs-target="#cryptoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Önceki</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#cryptoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Sonraki</span>
+        </button>
     </div>
+</section>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#cryptoCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-        <span class="visually-hidden">Önceki</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#cryptoCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-        <span class="visually-hidden">Sonraki</span>
-    </button>
-</div>
+<!-- 🔽 ALTTA MENÜ KARTLARI -->
+<section>
+    <div class="grid-layout">
+        <div class="card-neon">
+            <i class="fas fa-key"></i>
+            <h3>RSA Anahtar Üret</h3>
+            <p>Güvenli asimetrik anahtar çifti oluşturmak için RSA algoritmasını kullan.</p>
+            <a href="/KeyGenerate" class="btn-neon">Üret</a>
+        </div>
+
+        <div class="card-neon">
+            <i class="fas fa-lock"></i>
+            <h3>Metin Şifrele</h3>
+            <p>Public key ile verini şifrele ve sadece senin çözebileceğin hale getir.</p>
+            <a href="/RsaEncrypt" class="btn-neon">Şifrele</a>
+        </div>
+
+        <div class="card-neon">
+            <i class="fas fa-lock-open"></i>
+            <h3>Şifre Çöz</h3>
+            <p>Private key yardımıyla şifrelenmiş veriyi kolayca geri çöz.</p>
+            <a href="/RsaDecrypt" class="btn-neon">Çöz</a>
+        </div>
+
+        <div class="card-neon">
+            <i class="fas fa-fingerprint"></i>
+            <h3>SHA-256 Hash</h3>
+            <p>Veri bütünlüğünü korumak için tek yönlü güvenli özetleme fonksiyonu.</p>
+            <a href="/Sha256" class="btn-neon">Hashle</a>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     <script>

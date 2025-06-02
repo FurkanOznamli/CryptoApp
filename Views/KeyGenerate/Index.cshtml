@@ -1,36 +1,149 @@
 ﻿@{
     ViewData["Title"] = "RSA Anahtar Üretimi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="text-center mb-5">
-    <h2 class="fw-bold display-6 text-primary">🔐 RSA Anahtar Üretimi</h2>
-    <p class="text-muted mt-2">2048 bit güvenli RSA public ve private key çifti oluştur.</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    body {
+        background-color: #000;
+        color: #00bfff;
+        font-family: 'Orbitron', 'Courier New', monospace;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #00bfff;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        text-shadow: 0 0 12px #00bfff;
+    }
+
+    .neon-box {
+        background: rgba(0, 191, 255, 0.05);
+        border: 2px solid #00bfff;
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+    }
+
+    .form-label {
+        color: #bdeeff;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    textarea.form-control {
+        background-color: rgba(0, 255, 255, 0.03) !important;
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        padding: 1rem;
+        color: #bffcff;
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.1);
+    }
+
+        textarea.form-control:focus {
+            outline: none;
+            background-color: rgba(0, 255, 255, 0.08) !important;
+            box-shadow: 0 0 15px #00bfff, inset 0 0 10px rgba(0, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+    .btn-neon {
+        border: 2px solid #00bfff;
+        border-radius: 30px;
+        background: transparent;
+        color: #00bfff;
+        padding: 0.6rem 1.6rem;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-neon:hover {
+            background: #00bfff;
+            color: #000;
+            box-shadow: 0 0 12px #00bfff;
+        }
+
+    .btn-copy {
+        border: 2px solid #00bfff;
+        border-radius: 1rem;
+        background-color: transparent;
+        color: #00d9ff;
+        padding: 0.5rem 1.2rem;
+        font-weight: bold;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+    }
+
+        .btn-copy i {
+            font-size: 1.2rem;
+        }
+
+        .btn-copy:hover {
+            background-color: #00d9ff;
+            color: #000;
+            box-shadow: 0 0 15px #00d9ff;
+        }
+
+    .text-muted {
+        color: #b0cbd6 !important;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .input-group {
+        flex-wrap: nowrap;
+    }
+
+        .input-group button {
+            white-space: nowrap;
+        }
+</style>
+
+<!-- Başlık -->
+<section class="text-center">
+    <h2 class="section-title">🔐 RSA Anahtar Üretimi</h2>
+    <p class="text-muted">2048 bit güvenli RSA public ve private key çifti oluştur.</p>
 </section>
 
-<form asp-action="Generate" method="post" class="row g-4">
-    <div class="col-12">
-        <label class="form-label fw-semibold">🔓 Public Key</label>
+<!-- Form -->
+<form asp-action="Generate" method="post" class="container" style="max-width: 800px;">
+    <div class="neon-box mb-4">
+        <label class="form-label">🔓 Public Key</label>
         <div class="input-group">
             <textarea id="publicKey" class="form-control" rows="6" readonly>@ViewBag.PublicKey</textarea>
-            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('publicKey')">📋 Kopyala</button>
+            <button type="button" class="btn-copy ms-2" onclick="copyToClipboard('publicKey')">
+                <i class="fas fa-copy"></i> Kopyala
+            </button>
         </div>
     </div>
 
-    <div class="col-12">
-        <label class="form-label fw-semibold">🔒 Private Key</label>
+    <div class="neon-box mb-4">
+        <label class="form-label">🔒 Private Key</label>
         <div class="input-group">
             <textarea id="privateKey" class="form-control" rows="6" readonly>@ViewBag.PrivateKey</textarea>
-            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('privateKey')">📋 Kopyala</button>
+            <button type="button" class="btn-copy ms-2" onclick="copyToClipboard('privateKey')">
+                <i class="fas fa-copy"></i> Kopyala
+            </button>
         </div>
     </div>
 
-    <div class="col-12 d-flex justify-content-center gap-3">
-        <a href="/" class="btn btn-outline-dark px-4 py-2">
-            ⬅️ Ana Sayfaya Dön
-        </a>
-        <button type="submit" class="btn btn-success px-4 py-2">
-             Anahtar Üret
-        </button>
+    <div class="d-flex justify-content-center gap-4">
+        <a href="/" class="btn-neon">⬅️ Ana Sayfa</a>
+        <button type="submit" class="btn-neon">🔁 Anahtar Üret</button>
     </div>
 </form>
 

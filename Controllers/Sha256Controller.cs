@@ -12,6 +12,7 @@ namespace sifreleme.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            ViewBag.Mode = "text"; // default sekme: metin
             return View();
         }
 
@@ -27,6 +28,7 @@ namespace sifreleme.Controllers
                 var hash = sha256.ComputeHash(bytes);
 
                 ViewBag.HashResult = ByteArrayToHex(hash);
+                ViewBag.Mode = "text";
             }
             else if (uploadedFile != null && uploadedFile.Length > 0)
             {
@@ -36,10 +38,12 @@ namespace sifreleme.Controllers
 
                 ViewBag.HashResult = ByteArrayToHex(hash);
                 ViewBag.FileName = uploadedFile.FileName;
+                ViewBag.Mode = "file";
             }
             else
             {
                 ViewBag.Error = "Lütfen metin girin veya bir dosya yükleyin.";
+                ViewBag.Mode = "text";
             }
 
             return View();
